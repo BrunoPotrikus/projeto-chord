@@ -15,6 +15,15 @@ namespace Chord
                     no.NosResponsavel.AddRange(noResponsavel.NosResponsavel.Where(x => x.Id <= no.Id));
                     noResponsavel.NosResponsavel = noResponsavel.NosResponsavel.Where(x => x.Id > no.Id).ToList();
                 }
+                else
+                {
+                    for (var i = no.Id; i >= 0; i--)
+                    {
+                        if (lista[i].Ativo) return;
+
+                        no.NosResponsavel.Add(lista[i]);
+                    }
+                }
 
                 no.Ativo = true;
 
@@ -60,12 +69,12 @@ namespace Chord
                 informacao = somaChar.ToString();
             }
 
-            if (identificador > 0 && identificador <= 10)
+            if (identificador >= 0 && identificador <= 10)
             {
                 return identificador;
             }
 
-            return identificador;
+            return 0;
         }
         private static void InserirInformacao(List<No> lista, string informacao)
         {
@@ -114,12 +123,15 @@ namespace Chord
                             .Informacoes
                                 .Where(info => info.ToString() == informacao)
                                 .FirstOrDefault();
-                        Console.WriteLine($"A informação {objeto} foi encontrada no nó {noBuscado.Id}");
+                        if (objeto != null)
+                        {
+                            Console.WriteLine($"A informação {objeto} foi encontrada no nó {no.Id}");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Informação não encontrada.");
+                        }
                         return;
-                    }
-                    else
-                    {
-                        identificador++;
                     }
                 }
             }
